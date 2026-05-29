@@ -1,96 +1,132 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Produk') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-blue-800 leading-tight">
+                {{ __('Daftar Pegawai') }}
+            </h2>
+        </div>
     </x-slot>
-    <div class="py-12">
+
+    <div class="py-10 bg-blue-50 min-h-screen">
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="mb-6">
+
+            <div class="bg-white shadow-md rounded-2xl p-6 border border-blue-100">
+
+                <!-- Action -->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+
                     <a href="/employes/Add"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Tambah Data Pegawai
+                        class="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-500 transition shadow-sm">
+                        + Tambah Pegawai
                     </a>
+
+                    <a href="/employes/pdf"
+                        class="inline-flex items-center px-5 py-2.5 bg-red-500 text-white rounded-xl font-semibold text-sm hover:bg-red-400 transition shadow-sm">
+                        Cetak PDF
+                    </a>
+
                 </div>
-                <form action="/employes" method="GET" class="mb-6 flex items-center gap-2">
+
+                <!-- Search -->
+                <form action="/employes" method="GET" class="mb-6 flex flex-col md:flex-row gap-2">
 
                     <input type="text"
                         name="search"
                         value="{{ request('search') }}"
                         placeholder="Cari pegawai..."
-                        class="border border-gray-300 rounded-md shadow-sm px-4 py-2 w-64 focus:ring focus:ring-blue-200">
+                        class="w-full md:w-72 px-4 py-2 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-300 outline-none">
+
                     <button type="submit"
-                        class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500">
+                        class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition">
                         Search
                     </button>
                 </form>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-600 border-collapse border border-gray-300">
-                        <thead class="bg-gray-100 text-gray-800">
-                            <tr>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">NIP</th>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">Nama Pegawai</th>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">Jabatan</th>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">Departemen</th>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">foto</th>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">Tanggal Masuk</th>
-                                <th class="border border-gray-300 px-4 py-2 font-semibold text-center">Aksi</th>
 
+                <!-- Table -->
+                <div class="overflow-x-auto rounded-xl border border-blue-100">
+
+                    <table class="w-full text-sm text-left">
+
+                        <thead class="bg-blue-600 text-white">
+                            <tr>
+                                <th class="px-4 py-3 text-center">NIP</th>
+                                <th class="px-4 py-3 text-center">Nama</th>
+                                <th class="px-4 py-3 text-center">Jabatan</th>
+                                <th class="px-4 py-3 text-center">Departemen</th>
+                                <th class="px-4 py-3 text-center">Foto</th>
+                                <th class="px-4 py-3 text-center">Tanggal Masuk</th>
+                                <th class="px-4 py-3 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+
+                        <tbody class="divide-y divide-blue-100">
+
                             @foreach ($data as $employe)
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $employe->nip }}</td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $employe->nama_pegawai}}</td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $employe->jabatan}}</td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $employe->departement->nama_departemen ?? '-' }}</td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center"> 
+                                <tr class="hover:bg-blue-50 transition">
+
+                                    <td class="px-4 py-3 text-center">{{ $employe->nip }}</td>
+                                    <td class="px-4 py-3 text-center font-medium text-gray-700">
+                                        {{ $employe->nama_pegawai }}
+                                    </td>
+                                    <td class="px-4 py-3 text-center">{{ $employe->jabatan }}</td>
+                                    <td class="px-4 py-3 text-center">
+                                        {{ $employe->departement->nama_departemen ?? '-' }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-center">
                                         @if($employe->foto)
                                             <img src="{{ asset('foto_pegawai/' . $employe->foto) }}"
-                                                width="80" class="rounded mx-auto">
+                                                class="w-12 h-12 object-cover rounded-full mx-auto border border-blue-200">
                                         @else
-                                            Tidak ada foto
+                                            <span class="text-gray-400 text-xs">No photo</span>
                                         @endif
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $employe->tanggal_masuk}}</td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center space-x-2">
+
+                                    <td class="px-4 py-3 text-center">
+                                        {{ $employe->tanggal_masuk }}
+                                    </td>
+
+                                    <td class="px-4 py-3 text-center space-x-2">
+
                                         <a href="/employes/{{ $employe->id }}/edit"
-                                            class="inline-flex items-center px-3 py-1.5 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-400 active:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                            Update
+                                            class="inline-flex px-3 py-1 bg-yellow-400 text-white rounded-lg text-base hover:bg-yellow-300 transition">
+                                            Edit
                                         </a>
+
                                         <form action="/employes/{{ $employe->id }}" method="POST" class="inline-block">
                                             @csrf
                                             @method('DELETE')
+
                                             <button type="submit"
-                                                class="inline-flex items-center px-3 py-1.5 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                                class="inline-flex px-3 py-1 bg-red-500 text-white rounded-lg text-base hover:bg-red-400 transition"
                                                 onclick="return confirm('Yakin Hapus?')">
                                                 Hapus
                                             </button>
                                         </form>
+
                                     </td>
+
                                 </tr>
                             @endforeach
+
                             @if(count($data) == 0)
                                 <tr>
-                                    <td colspan="3" class="border border-gray-300 px-4 py-4 text-center text-gray-500">
-                                        Belum ada data pegawai yang masuk.
+                                    <td colspan="7" class="text-center py-6 text-gray-400">
+                                        Belum ada data pegawai
                                     </td>
                                 </tr>
                             @endif
+
                         </tbody>
                     </table>
-                    <div class="mt-4">
-                        {{ $data->withQueryString()->links() }}
-                    </div>
                 </div>
-                <div class="mb-6">
-                    <a href="/employes/pdf"
-                        class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">
-                        Cetak PDF
-                    </a>
+
+                <!-- Pagination -->
+                <div class="mt-5">
+                    {{ $data->withQueryString()->links() }}
                 </div>
+
             </div>
         </div>
     </div>
