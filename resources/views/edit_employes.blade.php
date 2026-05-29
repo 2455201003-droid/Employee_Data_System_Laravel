@@ -1,77 +1,123 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Employe Data') }}
+        <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            ✏️ Edit Data Pegawai
         </h2>
     </x-slot>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form action="/employes/{{ $employe->id }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-6 max-w-xl">
+
+    <div class="py-10 bg-gray-50 min-h-screen">
+
+        <div class="max-w-2xl mx-auto">
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+
+                <div class="mb-6">
+                    <h3 class="text-gray-800 font-semibold text-base flex items-center gap-2">
+                        📝 Form Edit Pegawai
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Silakan perbarui data jika ada perubahan
+                    </p>
+                </div>
+
+                @if ($errors->any())
+                    <div class="mb-5 bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm">
+                        ⚠️ Ada kesalahan input:
+                        <ul class="list-disc pl-5 mt-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="/employes/{{ $employe->id }}" method="POST" enctype="multipart/form-data"
+                      class="space-y-4">
+
                     @csrf
                     @method('PUT')
-                    @if ($errors->any())
-                <div class="bg-red-100 p-3 rounded">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                </div>
-                    @endif
-                    <div>
-                        <label for="nip" class="block font-medium text-sm text-gray-700">NIP</label>
-                        <input type="number" name="nip" id="nip" value="{{ $employe->nip }}"
-                            minlength="18"
-                            title="NIP harus minimal 18 digit angka"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                            required autofocus>
-                    </div>
-                    <div>
-                        <label for="nama_pegawai" class="block font-medium text-sm text-gray-700">Nama Pegawai</label>
-                        <input type="text" name="nama_pegawai" id="nama_pegawai" value="{{ $employe->nama_pegawai }}"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                            required autofocus>
-                    </div>
-                    <div>
-                        <label for="jabatan" class="block font-medium text-sm text-gray-700">Jabatan</label>
-                        <input type="text" name="jabatan" id="jabatan" value="{{ $employe->jabatan }}"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                            required autofocus>
-                    </div>
-                    <div>
-                        <label for="departement" class="block font-medium text-sm text-gray-700">Departemen</label>
-                            <select name="departement_id" required class="border p-2 w-full">
-                                <option value="">-- Pilih departemen --</option>
 
-                                @foreach($departements as $dep)
+                    <!-- NIP -->
+                    <div>
+                        <label class="text-sm text-gray-600 flex items-center gap-2">
+                            🆔 NIP
+                        </label>
+                        <input type="number" name="nip"
+                            value="{{ $employe->nip }}"
+                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
+                            required>
+                    </div>
+
+                    <!-- Nama -->
+                    <div>
+                        <label class="text-sm text-gray-600 flex items-center gap-2">
+                            👤 Nama Pegawai
+                        </label>
+                        <input type="text" name="nama_pegawai"
+                            value="{{ $employe->nama_pegawai }}"
+                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
+                            required>
+                    </div>
+
+                    <!-- Jabatan -->
+                    <div>
+                        <label class="text-sm text-gray-600 flex items-center gap-2">
+                            💼 Jabatan
+                        </label>
+                        <input type="text" name="jabatan"
+                            value="{{ $employe->jabatan }}"
+                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
+                            required>
+                    </div>
+
+                    <!-- Departemen -->
+                    <div>
+                        <label class="text-sm text-gray-600 flex items-center gap-2">
+                            🏢 Departemen
+                        </label>
+
+                        <select name="departement_id"
+                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none">
+
+                            <option value="">-- Pilih Departemen --</option>
+
+                            @foreach($departements as $dep)
                                 <option value="{{ $dep->id }}"
                                     {{ $employe->departement_id == $dep->id ? 'selected' : '' }}>
                                     {{ $dep->nama_departemen }}
                                 </option>
-                                @endforeach
-                            </select>
+                            @endforeach
+
+                        </select>
                     </div>
+
+                    <!-- Foto -->
                     <div>
-                        <label for="foto" class="block font-medium text-sm text-gray-700">Foto</label>
+                        <label class="text-sm text-gray-600 flex items-center gap-2">
+                            📷 Foto
+                        </label>
+
                         <input type="file" name="foto"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2 bg-gray-50">
                     </div>
 
+                    <!-- Button -->
+                    <div class="flex gap-3 pt-2">
 
-                    <div class="flex items-center gap-4">
                         <button type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo
-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            Simpan Perubahan
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow-sm transition">
+                            💾 Simpan Perubahan
                         </button>
+
                         <a href="/employes"
-                            class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
-disabled:opacity-25 transition ease-in-out duration-150">
-                            Batal
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-lg border border-gray-200 transition">
+                            ↩ Kembali
                         </a>
+
                     </div>
+
                 </form>
+
             </div>
         </div>
     </div>
