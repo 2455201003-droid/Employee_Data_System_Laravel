@@ -6,7 +6,6 @@
 
     <title>Sistem Data Pegawai</title>
 
-    <!-- Vite (INI WAJIB BIAR TAILWIND NYALA) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

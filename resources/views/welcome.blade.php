@@ -15,7 +15,7 @@
         <!-- Subtitle -->
         <p class="text-gray-500 mb-6">
             Selamat datang di sistem manajemen data pegawai perusahaan
-        </p>
+        </p>2
 
         <!-- Buttons -->
         <div class="flex justify-center gap-4">
