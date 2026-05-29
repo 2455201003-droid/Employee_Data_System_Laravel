@@ -75,7 +75,7 @@
                             @if(count($data) == 0)
                                 <tr>
                                     <td colspan="3" class="border border-gray-300 px-4 py-4 text-center text-gray-500">
-                                        Belum ada data pegawai.
+                                        Belum ada data pegawai yang masuk.
                                     </td>
                                 </tr>
                             @endif
